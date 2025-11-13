@@ -83,20 +83,25 @@ import calendar
 
 app = Flask(__name__)
 
-# Configuración de CORS para permitir peticiones desde GitHub Pages
+# Configuración de CORS - MÁS PERMISIVA para debugging
 CORS(app, resources={
     r"/*": {
-        "origins": [
-            "http://localhost:*",
-            "http://127.0.0.1:*",
-            "https://*.github.io",
-            "https://pave26.github.io"  # Cambia 'pave26' por tu usuario de GitHub
-        ],
+        "origins": "*",  # Permitir todos los orígenes temporalmente
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"],
-        "supports_credentials": True
+        "expose_headers": ["Content-Type"],
+        "supports_credentials": False,
+        "max_age": 3600
     }
 })
+
+# Agregar headers manualmente en cada respuesta
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 @app.route('/api/current/<location_id>')
 def get_current_data(location_id):
