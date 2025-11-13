@@ -8,6 +8,7 @@ import json
 import os
 import sys
 
+
 # Agregar estos imports al inicio del archivo scheduler.py
 from flask import send_file
 from io import BytesIO
@@ -81,7 +82,21 @@ import sqlite3
 import calendar
 
 app = Flask(__name__)
-CORS(app)  # Permitir requests desde el frontend
+
+# Configuración de CORS para permitir peticiones desde GitHub Pages
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "http://localhost:*",
+            "http://127.0.0.1:*",
+            "https://*.github.io",
+            "https://pave26.github.io"  # Cambia 'pave26' por tu usuario de GitHub
+        ],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"],
+        "supports_credentials": True
+    }
+})
 
 @app.route('/api/current/<location_id>')
 def get_current_data(location_id):

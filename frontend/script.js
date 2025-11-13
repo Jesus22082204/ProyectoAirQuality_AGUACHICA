@@ -1,9 +1,16 @@
 // ================================
 // CONFIGURACIÓN
 // ================================
-const apiKey = "0fceb022e90eecf2c580132f9ccd74ce";
+//const apiKey = "0fceb022e90eecf2c580132f9ccd74ce";
 
-const API_BASE = (window.API_BASE || "http://127.0.0.1:5000").replace(/\/$/, "");
+//const API_BASE = (window.API_BASE || "http://127.0.0.1:5000").replace(/\/$/, "");
+
+//const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  //  ? "http://127.0.0.1:5000"
+  //  : "https://proyectoairquality-aguachica.onrender.com"; // Reemplaza con tu URL de Render
+
+const apiKey = window.APP_CONFIG?.OPENWEATHER_API_KEY || "0fceb022e90eecf2c580132f9ccd74ce";
+const API_BASE = (window.APP_CONFIG?.API_BASE || "http://127.0.0.1:5000").replace(/\/$/, "");
 
 
 // Definir todos los puntos de interés - Aguachica General como principal
