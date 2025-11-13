@@ -1,14 +1,12 @@
 services:
-  # Web Service - API Backend
   - type: web
     name: proyectoairquality-aguachica
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: python scheduler.py api
-    workingDirectory: /  # 👈 Asegúrate que apunta a la raíz
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: 3.11.9  # 👈 Cambiar de 3.11.0 a 3.11.9
       - key: DATABASE_URL
         value: postgresql://airquality_db_cfeb_user:worW2BCeHKf6jwFnrWyiPXnG57ztPf6k@dpg-d4ah0iruibrs73cdpdd0-a.oregon-postgres.render.com/airquality_db_cfeb
       - key: OPENWEATHER_API_KEY
