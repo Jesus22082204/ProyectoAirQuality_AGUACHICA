@@ -1,9 +1,11 @@
 services:
+  # Web Service - API Backend
   - type: web
     name: proyectoairquality-aguachica
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python scheduler.py api  # ✅ Ahora incluye scheduler
+    startCommand: python scheduler.py api
+    workingDirectory: /  # 👈 Asegúrate que apunta a la raíz
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
