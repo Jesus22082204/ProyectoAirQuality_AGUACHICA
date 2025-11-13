@@ -4,7 +4,6 @@ import time
 import threading
 from datetime import datetime, timedelta
 import logging
-from data_collector import AirQualityCollector
 import json
 import os
 import sys
