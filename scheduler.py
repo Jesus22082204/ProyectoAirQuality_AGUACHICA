@@ -9,6 +9,14 @@ import json
 import os
 import sys
 
+# Agregar estos imports al inicio del archivo scheduler.py
+from flask import send_file
+from io import BytesIO
+import pandas as pd
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.utils.dataframe import dataframe_to_rows
+
 # Configurar logging
 if not os.path.exists('data'):
     os.makedirs('data')
@@ -136,8 +144,12 @@ def get_boxplot_data(location_id, year):
                 month_name = calendar.month_name[month]
                 
                 # Calcular percentiles para boxplot (aproximación)
-                conn = sqlite3.connect('data/air_quality.db')
+                from database_setup import get_historical_data, get_monthly_statistics, get_connection
+                conn = get_connection()
                 cursor = conn.cursor()
+
+                ##conn = sqlite3.connect('data/air_quality.db')
+                ##cursor = conn.cursor()
                 
                 # Obtener todos los valores del mes para calcular percentiles
                 cursor.execute('''
@@ -193,8 +205,11 @@ def get_boxplot_data(location_id, year):
 def get_locations():
     """Obtener todas las ubicaciones disponibles"""
     try:
-        conn = sqlite3.connect('data/air_quality.db')
+        from database_setup import get_historical_data, get_monthly_statistics, get_connection
+        conn = get_connection()
         cursor = conn.cursor()
+        ##conn = sqlite3.connect('data/air_quality.db')
+        ##cursor = conn.cursor()
         
         cursor.execute('''
         SELECT DISTINCT location_id, location_name, latitude, longitude,
@@ -225,8 +240,12 @@ def get_locations():
 def get_status():
     """Obtener estado general del sistema"""
     try:
-        conn = sqlite3.connect('data/air_quality.db')
+        from database_setup import get_historical_data, get_monthly_statistics, get_connection
+        conn = get_connection()
         cursor = conn.cursor()
+        
+        ##conn = sqlite3.connect('data/air_quality.db')
+        ##cursor = conn.cursor()
         
         # Contar total de registros
         cursor.execute('SELECT COUNT(*) FROM air_quality_data')
@@ -267,8 +286,12 @@ def get_trends(location_id):
     - aqi_distribution_7d: conteo por categorías 1..5 en los últimos 7 días
     """
     try:
-        conn = sqlite3.connect('data/air_quality.db')
+        from database_setup import get_historical_data, get_monthly_statistics, get_connection
+        conn = get_connection()
         cursor = conn.cursor()
+
+        ##conn = sqlite3.connect('data/air_quality.db')
+        ##cursor = conn.cursor()
 
         # Serie 24h
         cursor.execute(
@@ -314,10 +337,236 @@ def get_trends(location_id):
         })
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
+    
+    # pilas que no se
+@app.route('/api/export/<location_id>')
+def export_data(location_id):
+    """Exportar datos a Excel según el período solicitado"""
+    try:
+        period = request.args.get('period', '24h')
+        
+        # Determinar días según el período
+        period_days = {
+            '24h': 1,
+            'month': 30,
+            'year': 365
+        }
+        
+        days = period_days.get(period, 1)
+        
+        # Obtener datos históricos
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+        
+        data = get_historical_data(
+            location_id=location_id,
+            start_date=start_date.isoformat(),
+            end_date=end_date.isoformat(),
+            limit=50000  # Sin límite práctico
+        )
+        
+        if not data:
+            return jsonify({'success': False, 'error': 'No hay datos disponibles para exportar'})
+        
+        # Obtener información de la ubicación
+        from database_setup import get_historical_data, get_monthly_statistics, get_connection
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        ##conn = sqlite3.connect('data/air_quality.db')
+        ##cursor = conn.cursor()
+        cursor.execute(
+            'SELECT location_name, latitude, longitude FROM air_quality_data WHERE location_id = ? LIMIT 1',
+            (location_id,)
+        )
+        location_info = cursor.fetchone()
+        conn.close()
+        
+        location_name = location_info[0] if location_info else location_id
+        latitude = location_info[1] if location_info else 'N/A'
+        longitude = location_info[2] if location_info else 'N/A'
+        
+        # Crear DataFrame
+        df = pd.DataFrame(data)
+        
+        # Renombrar columnas para mejor legibilidad
+        column_names = {
+            'timestamp': 'Fecha y Hora',
+            'location_id': 'ID Ubicación',
+            'location_name': 'Nombre Ubicación',
+            'latitude': 'Latitud',
+            'longitude': 'Longitud',
+            'aqi': 'Índice de Calidad del Aire (AQI)',
+            'pm2_5': 'PM2.5 (µg/m³)',
+            'pm10': 'PM10 (µg/m³)',
+            'co': 'Monóxido de Carbono - CO (µg/m³)',
+            'no': 'Óxido Nítrico - NO (µg/m³)',
+            'no2': 'Dióxido de Nitrógeno - NO2 (µg/m³)',
+            'o3': 'Ozono - O3 (µg/m³)',
+            'so2': 'Dióxido de Azufre - SO2 (µg/m³)',
+            'nh3': 'Amoníaco - NH3 (µg/m³)',
+            'temperature': 'Temperatura (°C)',
+            'humidity': 'Humedad (%)',
+            'pressure': 'Presión Atmosférica (hPa)',
+            'wind_speed': 'Velocidad del Viento (m/s)'
+        }
+        
+        df = df.rename(columns=column_names)
+        
+        # Convertir timestamp a formato legible
+        if 'Fecha y Hora' in df.columns:
+            df['Fecha y Hora'] = pd.to_datetime(df['Fecha y Hora']).dt.strftime('%Y-%m-%d %H:%M:%S')
+        
+        # Crear archivo Excel en memoria con formato
+        output = BytesIO()
+        
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            # Hoja de datos
+            df.to_excel(writer, sheet_name='Datos', index=False)
+            
+            # Obtener el workbook y worksheet
+            workbook = writer.book
+            worksheet = writer.sheets['Datos']
+            
+            # Estilos
+            header_fill = PatternFill(start_color='4472C4', end_color='4472C4', fill_type='solid')
+            header_font = Font(bold=True, color='FFFFFF', size=11)
+            border = Border(
+                left=Side(style='thin'),
+                right=Side(style='thin'),
+                top=Side(style='thin'),
+                bottom=Side(style='thin')
+            )
+            
+            # Formatear encabezados
+            for cell in worksheet[1]:
+                cell.fill = header_fill
+                cell.font = header_font
+                cell.alignment = Alignment(horizontal='center', vertical='center')
+                cell.border = border
+            
+            # Formatear datos y ajustar ancho de columnas
+            for col_idx, column in enumerate(df.columns, 1):
+                # Ancho de columna
+                max_length = max(
+                    df[column].astype(str).apply(len).max(),
+                    len(column)
+                )
+                worksheet.column_dimensions[worksheet.cell(1, col_idx).column_letter].width = min(max_length + 2, 50)
+                
+                # Bordes para todas las celdas
+                for row_idx in range(2, len(df) + 2):
+                    cell = worksheet.cell(row_idx, col_idx)
+                    cell.border = border
+                    cell.alignment = Alignment(vertical='center')
+            
+            # Crear hoja de metadatos
+            meta_sheet = workbook.create_sheet('Metadatos')
+            
+            meta_data = [
+                ['INFORMACIÓN DEL REPORTE'],
+                [''],
+                ['Ubicación:', location_name],
+                ['ID Ubicación:', location_id],
+                ['Latitud:', latitude],
+                ['Longitud:', longitude],
+                [''],
+                ['Período:', period],
+                ['Fecha de inicio:', start_date.strftime('%Y-%m-%d %H:%M:%S')],
+                ['Fecha de fin:', end_date.strftime('%Y-%m-%d %H:%M:%S')],
+                ['Total de registros:', len(df)],
+                [''],
+                ['Fecha de generación:', datetime.now().strftime('%Y-%m-%d %H:%M:%S')],
+                [''],
+                ['DESCRIPCIÓN DE CONTAMINANTES'],
+                [''],
+                ['AQI', 'Índice de Calidad del Aire (1-5): 1=Bueno, 2=Aceptable, 3=Moderado, 4=Deficiente, 5=Muy deficiente'],
+                ['PM2.5', 'Material particulado fino (≤2.5 µm). Límite OMS: 15 µg/m³ (24h)'],
+                ['PM10', 'Material particulado (≤10 µm). Límite OMS: 45 µg/m³ (24h)'],
+                ['CO', 'Monóxido de carbono. Límite OMS: 4 mg/m³ (24h)'],
+                ['NO2', 'Dióxido de nitrógeno. Límite OMS: 25 µg/m³ (24h)'],
+                ['O3', 'Ozono troposférico. Límite OMS: 100 µg/m³ (8h)'],
+                ['SO2', 'Dióxido de azufre. Límite OMS: 40 µg/m³ (24h)'],
+                ['NH3', 'Amoníaco'],
+            ]
+            
+            for row in meta_data:
+                meta_sheet.append(row)
+            
+            # Formatear hoja de metadatos
+            meta_sheet['A1'].font = Font(bold=True, size=14, color='4472C4')
+            meta_sheet['A15'].font = Font(bold=True, size=12, color='4472C4')
+            
+            # Ajustar ancho de columnas en metadatos
+            meta_sheet.column_dimensions['A'].width = 30
+            meta_sheet.column_dimensions['B'].width = 80
+            
+            # Crear hoja de estadísticas
+            stats_sheet = workbook.create_sheet('Estadísticas')
+            
+            # Calcular estadísticas
+            numeric_columns = ['PM2.5 (µg/m³)', 'PM10 (µg/m³)', 'Índice de Calidad del Aire (AQI)']
+            stats_data = [['Contaminante', 'Promedio', 'Mínimo', 'Máximo', 'Desv. Estándar']]
+            
+            for col in numeric_columns:
+                if col in df.columns:
+                    values = pd.to_numeric(df[col], errors='coerce').dropna()
+                    if len(values) > 0:
+                        stats_data.append([
+                            col,
+                            round(values.mean(), 2),
+                            round(values.min(), 2),
+                            round(values.max(), 2),
+                            round(values.std(), 2)
+                        ])
+            
+            for row in stats_data:
+                stats_sheet.append(row)
+            
+            # Formatear encabezados de estadísticas
+            for cell in stats_sheet[1]:
+                cell.fill = header_fill
+                cell.font = header_font
+                cell.alignment = Alignment(horizontal='center')
+            
+            # Ajustar ancho de columnas
+            for col in range(1, 6):
+                stats_sheet.column_dimensions[stats_sheet.cell(1, col).column_letter].width = 25
+        
+        output.seek(0)
+        
+        # Nombre del archivo
+        period_name = {
+            '24h': '24horas',
+            'month': 'ultimo_mes',
+            'year': 'ultimo_año'
+        }.get(period, period)
+        
+        filename = f"datos_calidad_aire_{location_id}_{period_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        
+        return send_file(
+            output,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=filename
+        )
+        
+    except Exception as e:
+        logging.error(f"Error al exportar datos: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+    # pilas que no se
+
+##def run_api_server():
+    #"""Ejecutar el servidor API"""
+    ##app.run(host='127.0.0.1', port=5000, debug=False)
 
 def run_api_server():
     """Ejecutar el servidor API"""
-    app.run(host='127.0.0.1', port=5000, debug=False)
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
+
 
 def main():
     """Función principal para ejecutar scheduler y API"""

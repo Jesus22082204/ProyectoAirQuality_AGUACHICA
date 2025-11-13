@@ -1,6 +1,16 @@
 import sqlite3
+
 from datetime import datetime
 import os
+import psycopg2
+
+def get_connection():
+    db_url = os.getenv("DATABASE_URL")
+    if not db_url:
+        raise Exception("DATABASE_URL no está configurada")
+    return psycopg2.connect(db_url)
+
+
 
 def create_database():
     """Crear la base de datos y tabla para datos de calidad del aire"""
@@ -9,9 +19,16 @@ def create_database():
     if not os.path.exists('data'):
         os.makedirs('data')
     
+
+    ##local
     # Conectar a la base de datos (se crea si no existe)
-    conn = sqlite3.connect('data/air_quality.db')
+    #conn = sqlite3.connect('data/air_quality.db')
+    #cursor = conn.cursor()
+
+
+    conn = get_connection()
     cursor = conn.cursor()
+
     
     # Crear tabla para datos de calidad del aire
     cursor.execute('''
@@ -58,8 +75,13 @@ def insert_air_quality_data(location_id, location_name, lat, lon, timestamp,
                            pressure=None, wind_speed=None):
     """Insertar datos de calidad del aire en la base de datos (UPSERT que preserva valores existentes)"""
     
-    conn = sqlite3.connect('data/air_quality.db')
+    ##local
+    # conn = sqlite3.connect('data/air_quality.db')
+    #cursor = conn.cursor()
+
+    conn = get_connection()
     cursor = conn.cursor()
+
     
     try:
         cursor.execute('''
@@ -93,9 +115,13 @@ def insert_air_quality_data(location_id, location_name, lat, lon, timestamp,
 
 def get_historical_data(location_id=None, start_date=None, end_date=None, limit=None):
     """Obtener datos históricos de la base de datos"""
-    
-    conn = sqlite3.connect('data/air_quality.db')
+    ##local
+    #conn = sqlite3.connect('data/air_quality.db')
+    #cursor = conn.cursor()
+
+    conn = get_connection()
     cursor = conn.cursor()
+
     
     query = "SELECT * FROM air_quality_data WHERE 1=1"
     params = []
@@ -133,8 +159,12 @@ def get_historical_data(location_id=None, start_date=None, end_date=None, limit=
 def get_monthly_statistics(location_id, year, month):
     """Obtener estadísticas mensuales para boxplots"""
     
-    conn = sqlite3.connect('data/air_quality.db')
+    #conn = sqlite3.connect('data/air_quality.db')
+    #cursor = conn.cursor()
+
+    conn = get_connection()
     cursor = conn.cursor()
+
     
     cursor.execute('''
     SELECT 

@@ -596,77 +596,107 @@ function calcularEstadisticas(valores) {
 }
 
 
-function generarBoxplots(sources) {
-    const combined = [
-        ...(sources.history?.list || []),
-        ...(sources.forecast?.list || [])
-    ];
-
-    const agrupado = new Map();
-
-    combined.forEach((entry) => {
-        const fecha = new Date(entry.dt * 1000);
-        const mesIndex = fecha.getMonth();
-        const mesNombre = fecha.toLocaleString("es-ES", { month: "long" });
-
-        if (!agrupado.has(mesIndex)) {
-            agrupado.set(mesIndex, { nombre: mesNombre, pm25: [], pm10: [], aqi: [] });
-        }
-        const bucket = agrupado.get(mesIndex);
-        // Componentes
-        if (entry.components) {
-            if (typeof entry.components.pm2_5 !== "undefined") bucket.pm25.push(entry.components.pm2_5);
-            if (typeof entry.components.pm10 !== "undefined") bucket.pm10.push(entry.components.pm10);
-        }
-        // AQI si viene en la respuesta
-        if (entry.main && typeof entry.main.aqi !== "undefined") {
-            bucket.aqi.push(entry.main.aqi);
-        }
-    });
-
-    const currentMonthIndex = new Date().getMonth();
+async function generarBoxplots(sources) {
     const tableBody = document.querySelector("#boxplotTable tbody");
-    tableBody.innerHTML = "";
+    tableBody.innerHTML = "<tr><td colspan='12'>Cargando datos de la base de datos...</td></tr>";
+    
+    try {
+        // Obtener el punto actual seleccionado
+        const currentPointId = selectedPointId || 'aguachica_general';
+        
+        // Consultar datos históricos de los últimos 365 días desde tu base de datos
+        const API_BASE = 'http://127.0.0.1:5000';
+        const response = await fetch(`${API_BASE}/api/historical/${currentPointId}?days=365&limit=50000`);
+        
+        if (!response.ok) {
+            throw new Error('No se pudieron obtener datos de la base de datos');
+        }
+        
+        const result = await response.json();
+        
+        if (!result.success || !result.data || result.data.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="12">No hay datos históricos en la base de datos para este punto.</td></tr>`;
+            return;
+        }
+        
+        // Agrupar por mes
+        const agrupado = new Map();
+        
+        result.data.forEach((entry) => {
+            const fecha = new Date(entry.timestamp);
+            const mesIndex = fecha.getMonth();
+            const mesNombre = fecha.toLocaleString("es-ES", { month: "long" });
 
-    // Mostrar SIEMPRE desde enero hasta el mes anterior al actual.
-    const mesesParaMostrar = Array.from({ length: currentMonthIndex }, (_, i) => i);
+            if (!agrupado.has(mesIndex)) {
+                agrupado.set(mesIndex, { nombre: mesNombre, pm25: [], pm10: [], aqi: [] });
+            }
+            
+            const bucket = agrupado.get(mesIndex);
+            
+            // Agregar valores válidos
+            if (entry.pm2_5 != null && !isNaN(entry.pm2_5)) {
+                bucket.pm25.push(Number(entry.pm2_5));
+            }
+            if (entry.pm10 != null && !isNaN(entry.pm10)) {
+                bucket.pm10.push(Number(entry.pm10));
+            }
+            if (entry.aqi != null && !isNaN(entry.aqi)) {
+                bucket.aqi.push(Number(entry.aqi));
+            }
+        });
 
-    if (mesesParaMostrar.length === 0) {
-        // Enero: si tampoco hay datos del mes actual, no hay nada para mostrar
-        if (!agrupado.has(currentMonthIndex)) {
+        const currentMonthIndex = new Date().getMonth();
+        tableBody.innerHTML = "";
+
+        // Mostrar desde enero hasta el mes ANTERIOR (sin incluir el mes actual)
+        const mesesParaMostrar = Array.from({ length: currentMonthIndex }, (_, i) => i);
+
+        if (agrupado.size === 0) {
             tableBody.innerHTML = `<tr><td colspan="12">Sin datos suficientes para calcular boxplots.</td></tr>`;
             return;
         }
-    }
 
-    mesesParaMostrar.forEach((mesIndex) => {
-        let mesData = agrupado.get(mesIndex);
-        if (!mesData) {
-            const nombre = new Date(new Date().getFullYear(), mesIndex, 1).toLocaleString("es-ES", { month: "long" });
-            mesData = { nombre, pm25: [], pm10: [], aqi: [] };
+        mesesParaMostrar.forEach((mesIndex) => {
+            let mesData = agrupado.get(mesIndex);
+            
+            // Solo mostrar fila si hay datos para ese mes
+            if (mesData && (mesData.pm25.length > 0 || mesData.pm10.length > 0)) {
+                const statsPm25 = calcularEstadisticas(mesData.pm25);
+                const statsPm10 = calcularEstadisticas(mesData.pm10);
+                const mean = (arr) => (arr && arr.length) ? (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2) : "-";
+                const meanAqi = mean(mesData.aqi);
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                <td>${mesData.nombre.charAt(0).toUpperCase() + mesData.nombre.slice(1)}</td>
+                <td>${statsPm25.mediana}</td>
+                <td>${statsPm25.q1}</td>
+                <td>${statsPm25.q3}</td>
+                <td>${statsPm25.min}</td>
+                <td>${statsPm25.max}</td>
+                <td>${statsPm10.mediana}</td>
+                <td>${statsPm10.q1}</td>
+                <td>${statsPm10.q3}</td>
+                <td>${statsPm10.min}</td>
+                <td>${statsPm10.max}</td>
+                <td>${meanAqi}</td>
+                `;
+                tableBody.appendChild(row);
+                
+                // Debug: mostrar en consola
+                console.log(`${mesData.nombre}: PM2.5 valores = ${mesData.pm25.length}, Max = ${statsPm25.max}`);
+            }
+        });
+        
+        // Si no se agregó ninguna fila
+        if (tableBody.children.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="12">Sin datos suficientes para calcular boxplots.</td></tr>`;
         }
-        const statsPm25 = calcularEstadisticas(mesData.pm25);
-        const statsPm10 = calcularEstadisticas(mesData.pm10);
-        const mean = (arr) => (arr && arr.length) ? (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2) : "-";
-        const meanAqi = mean(mesData.aqi);
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-        <td>${mesData.nombre.charAt(0).toUpperCase() + mesData.nombre.slice(1)}</td>
-        <td>${statsPm25.mediana}</td>
-        <td>${statsPm25.q1}</td>
-        <td>${statsPm25.q3}</td>
-        <td>${statsPm25.min}</td>
-        <td>${statsPm25.max}</td>
-        <td>${statsPm10.mediana}</td>
-        <td>${statsPm10.q1}</td>
-        <td>${statsPm10.q3}</td>
-        <td>${statsPm10.min}</td>
-        <td>${statsPm10.max}</td>
-        <td>${meanAqi}</td>
-        `;
-        tableBody.appendChild(row);
-    });
+        
+    } catch (error) {
+        console.error('Error al generar boxplots desde DB:', error);
+        tableBody.innerHTML = `<tr><td colspan="12">Error al cargar datos: ${error.message}</td></tr>`;
+    }
 }
 
 

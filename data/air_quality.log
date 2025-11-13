@@ -840,66 +840,150 @@
 2025-09-26 21:39:28,646 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on http://127.0.0.1:5000
 2025-09-26 21:39:28,681 - INFO - [33mPress CTRL+C to quit[0m
-2025-09-28 14:20:13,723 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2025-10-09 10:56:08,923 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on http://127.0.0.1:5000
-2025-09-28 14:20:13,723 - INFO - [33mPress CTRL+C to quit[0m
-2025-09-28 14:23:24,813 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/locations HTTP/1.1" 200 -
-2025-09-28 14:23:24,819 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/aguachica_general?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,821 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/bosque?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,821 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/parque_central?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,821 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/estadio?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,822 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/ciudadela_paz?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,822 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/parque_morrocoy?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,824 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/patinodromo?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,825 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/universidad?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,846 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/aguachica_general?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,848 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/bosque?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,850 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/ciudadela_paz?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,852 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/estadio?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,857 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/parque_central?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,858 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/universidad?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,859 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/parque_morrocoy?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:23:24,860 - INFO - 127.0.0.1 - - [28/Sep/2025 14:23:24] "GET /api/historical/patinodromo?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:25:04,291 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2025-10-09 10:56:08,953 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-16 10:42:13,348 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on http://127.0.0.1:5000
-2025-09-28 14:25:04,291 - INFO - [33mPress CTRL+C to quit[0m
-2025-09-28 14:25:09,975 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:09] "GET /api/locations HTTP/1.1" 200 -
-2025-09-28 14:25:09,978 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:09] "GET /api/historical/aguachica_general?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:25:09,988 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:09] "GET /api/historical/parque_central?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:25:09,989 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:09] "GET /api/historical/ciudadela_paz?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:25:09,990 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:09] "GET /api/historical/estadio?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:25:09,991 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:09] "GET /api/historical/parque_morrocoy?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:25:09,991 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:09] "GET /api/historical/bosque?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:25:09,992 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:09] "GET /api/historical/patinodromo?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:25:09,993 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:09] "GET /api/historical/universidad?days=2&limit=4000 HTTP/1.1" 200 -
-2025-09-28 14:25:10,017 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:10] "GET /api/historical/aguachica_general?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:25:10,021 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:10] "GET /api/historical/bosque?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:25:10,023 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:10] "GET /api/historical/estadio?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:25:10,025 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:10] "GET /api/historical/ciudadela_paz?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:25:10,031 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:10] "GET /api/historical/parque_central?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:25:10,033 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:10] "GET /api/historical/patinodromo?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:25:10,034 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:10] "GET /api/historical/universidad?days=7&limit=10000 HTTP/1.1" 200 -
-2025-09-28 14:25:10,035 - INFO - 127.0.0.1 - - [28/Sep/2025 14:25:10] "GET /api/historical/parque_morrocoy?days=7&limit=10000 HTTP/1.1" 200 -
-2025-10-01 20:58:26,143 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2025-10-16 10:42:13,376 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-16 10:43:50,187 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/locations HTTP/1.1" 200 -
+2025-10-16 10:43:50,205 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/aguachica_general?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,213 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/estadio?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,219 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/ciudadela_paz?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,226 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/bosque?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,229 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/parque_morrocoy?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,228 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/parque_central?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,233 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/universidad?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,235 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/patinodromo?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,283 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/aguachica_general?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,297 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/bosque?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,308 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/ciudadela_paz?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,318 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/universidad?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,324 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/estadio?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,325 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/parque_central?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,331 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/patinodromo?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 10:43:50,336 - INFO - 127.0.0.1 - - [16/Oct/2025 10:43:50] "GET /api/historical/parque_morrocoy?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 10:56:31,523 - INFO - 127.0.0.1 - - [16/Oct/2025 10:56:31] "GET /api/historical/aguachica_general?days=365&limit=50000 HTTP/1.1" 200 -
+2025-10-16 11:00:28,047 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:28] "GET /api/historical/aguachica_general?days=365&limit=50000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,076 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/locations HTTP/1.1" 200 -
+2025-10-16 11:00:32,095 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/aguachica_general?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,101 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/bosque?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,108 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/estadio?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,110 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/ciudadela_paz?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,112 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/parque_morrocoy?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,117 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/patinodromo?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,121 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/universidad?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,125 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/parque_central?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,180 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/aguachica_general?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,185 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/ciudadela_paz?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,190 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/estadio?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,197 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/parque_morrocoy?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,206 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/patinodromo?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,211 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/parque_central?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,213 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/bosque?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:00:32,218 - INFO - 127.0.0.1 - - [16/Oct/2025 11:00:32] "GET /api/historical/universidad?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,012 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/locations HTTP/1.1" 200 -
+2025-10-16 11:24:00,050 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/aguachica_general?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,061 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/ciudadela_paz?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,066 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/estadio?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,074 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/bosque?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,094 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/parque_central?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,111 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/parque_morrocoy?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,118 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/patinodromo?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,120 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/universidad?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,190 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/aguachica_general?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,199 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/ciudadela_paz?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,221 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/parque_central?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,228 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/bosque?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,234 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/estadio?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,236 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/parque_morrocoy?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,250 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/universidad?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-16 11:24:00,252 - INFO - 127.0.0.1 - - [16/Oct/2025 11:24:00] "GET /api/historical/patinodromo?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-27 10:09:05,485 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on http://127.0.0.1:5000
-2025-10-01 20:58:26,143 - INFO - [33mPress CTRL+C to quit[0m
-2025-10-01 21:00:02,536 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2025-10-27 10:09:05,528 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-27 10:09:43,341 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:43] "GET /api/historical/aguachica_general?days=365&limit=50000 HTTP/1.1" 200 -
+2025-10-27 10:09:58,980 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:58] "GET /api/locations HTTP/1.1" 200 -
+2025-10-27 10:09:58,993 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:58] "GET /api/historical/aguachica_general?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-27 10:09:58,996 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:58] "GET /api/historical/bosque?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,006 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/ciudadela_paz?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,011 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/parque_morrocoy?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,015 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/parque_central?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,019 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/estadio?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,024 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/universidad?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,026 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/patinodromo?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,077 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/aguachica_general?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,102 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/parque_morrocoy?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,106 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/universidad?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,109 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/patinodromo?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,114 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/bosque?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,117 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/ciudadela_paz?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,123 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/estadio?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-27 10:09:59,130 - INFO - 127.0.0.1 - - [27/Oct/2025 10:09:59] "GET /api/historical/parque_central?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-27 10:13:47,694 - INFO - 127.0.0.1 - - [27/Oct/2025 10:13:47] "GET /api/historical/aguachica_general?days=365&limit=50000 HTTP/1.1" 200 -
+2025-10-27 10:13:56,756 - INFO - 127.0.0.1 - - [27/Oct/2025 10:13:56] "GET /api/historical/aguachica_general?days=365&limit=50000 HTTP/1.1" 200 -
+2025-10-27 10:27:52,242 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on http://127.0.0.1:5000
-2025-10-01 21:00:02,536 - INFO - [33mPress CTRL+C to quit[0m
-2025-10-01 21:00:20,886 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/locations HTTP/1.1" 200 -
-2025-10-01 21:00:20,891 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/aguachica_general?days=2&limit=4000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,893 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/bosque?days=2&limit=4000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,894 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/ciudadela_paz?days=2&limit=4000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,897 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/estadio?days=2&limit=4000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,897 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/parque_central?days=2&limit=4000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,898 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/parque_morrocoy?days=2&limit=4000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,900 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/patinodromo?days=2&limit=4000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,901 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/universidad?days=2&limit=4000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,945 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/estadio?days=7&limit=10000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,947 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/bosque?days=7&limit=10000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,949 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/ciudadela_paz?days=7&limit=10000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,951 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/parque_central?days=7&limit=10000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,953 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/parque_morrocoy?days=7&limit=10000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,955 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/aguachica_general?days=7&limit=10000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,956 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/universidad?days=7&limit=10000 HTTP/1.1" 200 -
-2025-10-01 21:00:20,958 - INFO - 127.0.0.1 - - [01/Oct/2025 21:00:20] "GET /api/historical/patinodromo?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-27 10:27:52,276 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-27 10:29:50,368 - INFO - 127.0.0.1 - - [27/Oct/2025 10:29:50] "GET /api/historical/aguachica_general?days=365&limit=50000 HTTP/1.1" 200 -
+2025-10-27 10:30:10,966 - INFO - 127.0.0.1 - - [27/Oct/2025 10:30:10] "[33mGET /api/export/aguachica_general?period=24h HTTP/1.1[0m" 404 -
+2025-10-27 10:32:12,171 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-10-27 10:32:12,199 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-27 10:33:00,986 - INFO - 127.0.0.1 - - [27/Oct/2025 10:33:00] "GET /api/export/aguachica_general?period=24h HTTP/1.1" 200 -
+2025-10-27 10:33:45,574 - INFO - 127.0.0.1 - - [27/Oct/2025 10:33:45] "GET /api/export/aguachica_general?period=month HTTP/1.1" 200 -
+2025-10-27 10:35:03,792 - INFO - 127.0.0.1 - - [27/Oct/2025 10:35:03] "GET /api/export/aguachica_general?period=year HTTP/1.1" 200 -
+2025-10-27 10:38:37,491 - INFO - 127.0.0.1 - - [27/Oct/2025 10:38:37] "GET /api/historical/aguachica_general?days=365&limit=50000 HTTP/1.1" 200 -
+2025-10-27 10:38:42,873 - INFO - 127.0.0.1 - - [27/Oct/2025 10:38:42] "GET /api/export/aguachica_general?period=24h HTTP/1.1" 200 -
+2025-10-30 10:00:12,309 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-10-30 10:00:12,356 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-30 10:00:39,556 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:39] "GET /api/historical/aguachica_general?days=365&limit=50000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,121 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/locations HTTP/1.1" 200 -
+2025-10-30 10:00:56,134 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/aguachica_general?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,148 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/parque_central?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,155 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/bosque?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,158 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/ciudadela_paz?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,166 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/parque_morrocoy?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,167 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/patinodromo?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,170 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/estadio?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,173 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/universidad?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,243 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/aguachica_general?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,263 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/universidad?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,277 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/bosque?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,284 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/ciudadela_paz?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,288 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/patinodromo?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,293 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/parque_central?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,298 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/parque_morrocoy?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:00:56,302 - INFO - 127.0.0.1 - - [30/Oct/2025 10:00:56] "GET /api/historical/estadio?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:01:17,505 - INFO - 127.0.0.1 - - [30/Oct/2025 10:01:17] "GET /api/export/aguachica_general?period=24h HTTP/1.1" 200 -
+2025-10-30 10:20:14,567 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-10-30 10:20:14,623 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-30 10:20:28,680 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-10-30 10:20:28,681 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-30 10:20:35,016 - INFO - 127.0.0.1 - - [30/Oct/2025 10:20:35] "GET /api/historical/aguachica_general?days=365&limit=50000 HTTP/1.1" 200 -
+2025-10-30 10:21:36,836 - INFO - 127.0.0.1 - - [30/Oct/2025 10:21:36] "GET /api/historical/aguachica_general?days=365&limit=50000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,493 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/locations HTTP/1.1" 200 -
+2025-10-30 10:22:09,512 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/aguachica_general?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,522 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/bosque?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,527 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/estadio?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,537 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/patinodromo?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,544 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/ciudadela_paz?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,546 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/parque_central?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,577 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/parque_morrocoy?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,578 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/universidad?days=2&limit=4000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,714 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/aguachica_general?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,729 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/ciudadela_paz?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,745 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/estadio?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,755 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/patinodromo?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,760 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/parque_central?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,768 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/bosque?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,773 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/parque_morrocoy?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:22:09,780 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:09] "GET /api/historical/universidad?days=7&limit=10000 HTTP/1.1" 200 -
+2025-10-30 10:22:38,495 - INFO - 127.0.0.1 - - [30/Oct/2025 10:22:38] "GET /api/export/aguachica_general?period=24h HTTP/1.1" 200 -
+2025-11-06 08:43:49,835 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-11-06 08:43:50,102 - INFO - [33mPress CTRL+C to quit[0m
+2025-11-06 08:43:56,965 - INFO - 127.0.0.1 - - [06/Nov/2025 08:43:56] "GET /api/historical/aguachica_general?days=365&limit=50000 HTTP/1.1" 200 -
