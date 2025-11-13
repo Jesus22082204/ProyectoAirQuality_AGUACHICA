@@ -4,7 +4,7 @@ from psycopg2.extras import execute_batch
 
 # --- Rutas y conexión ---
 sqlite_path = "data/air_quality.db"
-postgres_url = "postgresql://airquality_db_cfeb_user:worW2BCeHKf6jwFnrWyiPXnG57ztPf6k@dpg-d4ah0iruibrs73cdpdd0-a.oregon-postgres.render.com/airquality_db_cfeb"
+postgres_url = "sapo"
 
 # --- Conectar a SQLite ---
 sqlite_conn = sqlite3.connect(sqlite_path)
