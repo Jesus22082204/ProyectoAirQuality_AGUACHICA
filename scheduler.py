@@ -9,6 +9,10 @@ import os
 import sys
 
 
+from data_collector import AirQualityCollector
+
+
+
 # Agregar estos imports al inicio del archivo scheduler.py
 from flask import send_file
 from io import BytesIO
@@ -102,7 +106,7 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
-
+x
 @app.route('/api/current/<location_id>')
 def get_current_data(location_id):
     """Obtener datos más recientes de una ubicación"""
@@ -587,6 +591,16 @@ def run_api_server():
     app.run(host='0.0.0.0', port=port, debug=False)
 
 
+def start_background_scheduler(api_key):
+    """Ejecutar scheduler en background"""
+    def scheduler_loop():
+        scheduler = DataScheduler(api_key)
+        scheduler.start_scheduler()
+    
+    thread = threading.Thread(target=scheduler_loop, daemon=True)
+    thread.start()
+    logging.info("✅ Scheduler iniciado en background")
+        
 def main():
     """Función principal para ejecutar scheduler y API"""
     
@@ -596,27 +610,19 @@ def main():
         try:
             with open('config.json', 'r') as f:
                 config = json.load(f)
-                api_key = config.get('openweather_api_key')
+                api_key =     config.get('openweather_api_key')
         except FileNotFoundError:
             pass
     
     if not api_key:
-        print("❌ API key no configurada. Crea un archivo config.json con tu API key:")
-        print('{"openweather_api_key": "tu_api_key_aqui"}')
+        print("❌ API key no configurada")
         return
     
     if len(sys.argv) > 1:
-        if sys.argv[1] == 'scheduler':
-            # Ejecutar solo el scheduler
-            scheduler = DataScheduler(api_key)
-            try:
-                scheduler.start_scheduler()
-            except KeyboardInterrupt:
-                scheduler.stop_scheduler()
-                
-        elif sys.argv[1] == 'api':
-            # Ejecutar solo el servidor API
-            print("🚀 Iniciando servidor API en http://127.0.0.1:5000")
+        if sys.argv[1] == 'api':
+            # ✅ NUEVO: Ejecutar scheduler en background + API
+            start_background_scheduler(api_key)
+            print("🚀 Iniciando servidor API con scheduler en background")
             run_api_server()
             
         elif sys.argv[1] == 'both':
@@ -644,7 +650,7 @@ def main():
                 scheduler.stop_scheduler()
                 print("\n✅ Sistema detenido")
     else:
-        print("Uso: python scheduler.py [scheduler|api|both]")
+        print("Uso: python scheduler.py api")
 
 if __name__ == "__main__":
     main()

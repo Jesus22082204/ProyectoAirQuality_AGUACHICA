@@ -1,51 +1,18 @@
 services:
-  # Web Service - API Backend
   - type: web
     name: proyectoairquality-aguachica
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python scheduler.py api
+    startCommand: python scheduler.py api  # ✅ Ahora incluye scheduler
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: DATABASE_URL
-        fromDatabase:
-          name: airquality-db
-          property: connectionString
+        value: postgresql://airquality_db_cfeb_user:worW2BCeHKf6jwFnrWyiPXnG57ztPf6k@dpg-d4ah0iruibrs73cdpdd0-a.oregon-postgres.render.com/airquality_db_cfeb
       - key: OPENWEATHER_API_KEY
-        sync: false  # Configura esto manualmente en Render Dashboard
+        sync: false
       - key: PORT
         value: 5000
-
-  # Cron Job - Recolección diaria a las 6:00 AM UTC
-  - type: cron
-    name: daily-data-collection
-    env: python
-    schedule: "0 6 * * *"  # Cada día a las 6:00 AM UTC (1:00 AM Colombia)
-    buildCommand: pip install -r requirements.txt
-    startCommand: python daily_collector.py
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: airquality-db
-          property: connectionString
-      - key: OPENWEATHER_API_KEY
-        sync: false
-
-  # Cron Job - Recolección adicional a las 18:00 PM UTC
-  - type: cron
-    name: evening-data-collection
-    env: python
-    schedule: "0 18 * * *"  # Cada día a las 6:00 PM UTC (1:00 PM Colombia)
-    buildCommand: pip install -r requirements.txt
-    startCommand: python daily_collector.py
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: airquality-db
-          property: connectionString
-      - key: OPENWEATHER_API_KEY
-        sync: false
 
 databases:
   - name: airquality-db
