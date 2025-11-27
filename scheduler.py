@@ -4,14 +4,10 @@ import time
 import threading
 from datetime import datetime, timedelta
 import logging
+from data_collector import AirQualityCollector
 import json
 import os
 import sys
-
-
-from data_collector import AirQualityCollector
-
-
 
 # Agregar estos imports al inicio del archivo scheduler.py
 from flask import send_file
@@ -86,27 +82,8 @@ import sqlite3
 import calendar
 
 app = Flask(__name__)
+CORS(app)  # Permitir requests desde el frontend
 
-# Configuración de CORS - MÁS PERMISIVA para debugging
-CORS(app, resources={
-    r"/*": {
-        "origins": "*",  # Permitir todos los orígenes temporalmente
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"],
-        "expose_headers": ["Content-Type"],
-        "supports_credentials": False,
-        "max_age": 3600
-    }
-})
-
-# Agregar headers manualmente en cada respuesta
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    return response
-x
 @app.route('/api/current/<location_id>')
 def get_current_data(location_id):
     """Obtener datos más recientes de una ubicación"""
@@ -167,12 +144,8 @@ def get_boxplot_data(location_id, year):
                 month_name = calendar.month_name[month]
                 
                 # Calcular percentiles para boxplot (aproximación)
-                from database_setup import get_historical_data, get_monthly_statistics, get_connection
-                conn = get_connection()
+                conn = sqlite3.connect('data/air_quality.db')
                 cursor = conn.cursor()
-
-                ##conn = sqlite3.connect('data/air_quality.db')
-                ##cursor = conn.cursor()
                 
                 # Obtener todos los valores del mes para calcular percentiles
                 cursor.execute('''
@@ -228,11 +201,8 @@ def get_boxplot_data(location_id, year):
 def get_locations():
     """Obtener todas las ubicaciones disponibles"""
     try:
-        from database_setup import get_historical_data, get_monthly_statistics, get_connection
-        conn = get_connection()
+        conn = sqlite3.connect('data/air_quality.db')
         cursor = conn.cursor()
-        ##conn = sqlite3.connect('data/air_quality.db')
-        ##cursor = conn.cursor()
         
         cursor.execute('''
         SELECT DISTINCT location_id, location_name, latitude, longitude,
@@ -263,12 +233,8 @@ def get_locations():
 def get_status():
     """Obtener estado general del sistema"""
     try:
-        from database_setup import get_historical_data, get_monthly_statistics, get_connection
-        conn = get_connection()
+        conn = sqlite3.connect('data/air_quality.db')
         cursor = conn.cursor()
-        
-        ##conn = sqlite3.connect('data/air_quality.db')
-        ##cursor = conn.cursor()
         
         # Contar total de registros
         cursor.execute('SELECT COUNT(*) FROM air_quality_data')
@@ -309,12 +275,8 @@ def get_trends(location_id):
     - aqi_distribution_7d: conteo por categorías 1..5 en los últimos 7 días
     """
     try:
-        from database_setup import get_historical_data, get_monthly_statistics, get_connection
-        conn = get_connection()
+        conn = sqlite3.connect('data/air_quality.db')
         cursor = conn.cursor()
-
-        ##conn = sqlite3.connect('data/air_quality.db')
-        ##cursor = conn.cursor()
 
         # Serie 24h
         cursor.execute(
@@ -392,12 +354,8 @@ def export_data(location_id):
             return jsonify({'success': False, 'error': 'No hay datos disponibles para exportar'})
         
         # Obtener información de la ubicación
-        from database_setup import get_historical_data, get_monthly_statistics, get_connection
-        conn = get_connection()
+        conn = sqlite3.connect('data/air_quality.db')
         cursor = conn.cursor()
-
-        ##conn = sqlite3.connect('data/air_quality.db')
-        ##cursor = conn.cursor()
         cursor.execute(
             'SELECT location_name, latitude, longitude FROM air_quality_data WHERE location_id = ? LIMIT 1',
             (location_id,)
@@ -580,27 +538,10 @@ def export_data(location_id):
 
     # pilas que no se
 
-##def run_api_server():
-    #"""Ejecutar el servidor API"""
-    ##app.run(host='127.0.0.1', port=5000, debug=False)
-
 def run_api_server():
     """Ejecutar el servidor API"""
-    import os
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(host='127.0.0.1', port=5000, debug=False)
 
-
-def start_background_scheduler(api_key):
-    """Ejecutar scheduler en background"""
-    def scheduler_loop():
-        scheduler = DataScheduler(api_key)
-        scheduler.start_scheduler()
-    
-    thread = threading.Thread(target=scheduler_loop, daemon=True)
-    thread.start()
-    logging.info("✅ Scheduler iniciado en background")
-        
 def main():
     """Función principal para ejecutar scheduler y API"""
     
@@ -610,19 +551,27 @@ def main():
         try:
             with open('config.json', 'r') as f:
                 config = json.load(f)
-                api_key =     config.get('openweather_api_key')
+                api_key = config.get('openweather_api_key')
         except FileNotFoundError:
             pass
     
     if not api_key:
-        print("❌ API key no configurada")
+        print("❌ API key no configurada. Crea un archivo config.json con tu API key:")
+        print('{"openweather_api_key": "tu_api_key_aqui"}')
         return
     
     if len(sys.argv) > 1:
-        if sys.argv[1] == 'api':
-            # ✅ NUEVO: Ejecutar scheduler en background + API
-            start_background_scheduler(api_key)
-            print("🚀 Iniciando servidor API con scheduler en background")
+        if sys.argv[1] == 'scheduler':
+            # Ejecutar solo el scheduler
+            scheduler = DataScheduler(api_key)
+            try:
+                scheduler.start_scheduler()
+            except KeyboardInterrupt:
+                scheduler.stop_scheduler()
+                
+        elif sys.argv[1] == 'api':
+            # Ejecutar solo el servidor API
+            print("🚀 Iniciando servidor API en http://127.0.0.1:5000")
             run_api_server()
             
         elif sys.argv[1] == 'both':
@@ -650,7 +599,7 @@ def main():
                 scheduler.stop_scheduler()
                 print("\n✅ Sistema detenido")
     else:
-        print("Uso: python scheduler.py api")
+        print("Uso: python scheduler.py [scheduler|api|both]")
 
 if __name__ == "__main__":
     main()

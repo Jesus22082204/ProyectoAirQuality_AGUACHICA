@@ -1,29 +1,22 @@
 // ================================
 // CONFIGURACIÓN
 // ================================
-//const apiKey = "0fceb022e90eecf2c580132f9ccd74ce";
-
-//const API_BASE = (window.API_BASE || "http://127.0.0.1:5000").replace(/\/$/, "");
-
-//const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  //  ? "http://127.0.0.1:5000"
-  //  : "https://proyectoairquality-aguachica.onrender.com"; // Reemplaza con tu URL de Render
-
-const apiKey = window.APP_CONFIG?.OPENWEATHER_API_KEY || "0fceb022e90eecf2c580132f9ccd74ce";
-const API_BASE = (window.APP_CONFIG?.API_BASE || "http://127.0.0.1:5000").replace(/\/$/, "");
-
+const apiKey = "0fceb022e90eecf2c580132f9ccd74ce";
 
 // Definir todos los puntos de interés - Aguachica General como principal
 const pointsOfInterest = [
     {
         id: 'aguachica_general',
         name: 'Aguachica - Vista General',
-        lat: 8.312, // Coordenadas centrales de la ciudad
-        lon: -73.626,
+        lat: 8.309699288457269, // Coordenadas centrales de la ciudad
+        lon: -73.6119974164492,
 
         // probar coords bogota 4.707817598852641, -74.06800427097771
         // probar coords medellin 6.247268619172579, -75.57366403882658
         // probar coords cali 3.4457716834629424, -76.53323977739839
+        // PEKIN 39.92788675613883, 116.39741546598924
+        // AGUACHICA 8.309699288457269, -73.6119974164492
+        // Bangladesh 24.129906230101707, 90.23607078301917
 
 
         isMain: true, // Punto principal para el dashboard
@@ -99,10 +92,10 @@ let markers = new Map();
 
 // Traducción AQI
 function getAQIMessage(aqi) {
-    if (aqi >= 151) return { msg: "Muy mala", cls: "bg-red-200", color: "#dc2626" };
-    if (aqi >= 101) return { msg: "No saludable para grupos sensibles", cls: "bg-yellow-200", color: "#d97706" };
-    if (aqi >= 51) return { msg: "Moderada", cls: "bg-orange-200", color: "#ea580c" };
-    return { msg: "Buena", cls: "bg-green-200", color: "#16a34a" };
+    if (aqi >= 5) return { msg: "Muy mala", cls: "bg-red-200", color: "#dc2626", emoji: "🚨" };
+    if (aqi >= 3) return { msg: "No saludable para grupos sensibles", cls: "bg-yellow-200", color: "#d97706", emoji: "⚠️" };
+    if (aqi >= 2) return { msg: "Moderada", cls: "bg-orange-200", color: "#ea580c", emoji: "😷" };
+    return { msg: "Buena", cls: "bg-green-200", color: "#16a34a", emoji: "✅" };
 }
 
 // Color para heatmap
@@ -609,32 +602,29 @@ function calcularEstadisticas(valores) {
 async function generarBoxplots(sources) {
     const tableBody = document.querySelector("#boxplotTable tbody");
     tableBody.innerHTML = "<tr><td colspan='12'>Cargando datos de la base de datos...</td></tr>";
-
+    
     try {
         // Obtener el punto actual seleccionado
         const currentPointId = selectedPointId || 'aguachica_general';
-
+        
         // Consultar datos históricos de los últimos 365 días desde tu base de datos
-        // Consultar datos históricos de los últimos 365 días desde tu base de datos
-        const response = await fetch(
-            `${API_BASE}/api/historical/${currentPointId}?days=365&limit=50000`
-        );
-
-
+        const API_BASE = 'http://127.0.0.1:5000';
+        const response = await fetch(`${API_BASE}/api/historical/${currentPointId}?days=365&limit=50000`);
+        
         if (!response.ok) {
             throw new Error('No se pudieron obtener datos de la base de datos');
         }
-
+        
         const result = await response.json();
-
+        
         if (!result.success || !result.data || result.data.length === 0) {
             tableBody.innerHTML = `<tr><td colspan="12">No hay datos históricos en la base de datos para este punto.</td></tr>`;
             return;
         }
-
+        
         // Agrupar por mes
         const agrupado = new Map();
-
+        
         result.data.forEach((entry) => {
             const fecha = new Date(entry.timestamp);
             const mesIndex = fecha.getMonth();
@@ -643,9 +633,9 @@ async function generarBoxplots(sources) {
             if (!agrupado.has(mesIndex)) {
                 agrupado.set(mesIndex, { nombre: mesNombre, pm25: [], pm10: [], aqi: [] });
             }
-
+            
             const bucket = agrupado.get(mesIndex);
-
+            
             // Agregar valores válidos
             if (entry.pm2_5 != null && !isNaN(entry.pm2_5)) {
                 bucket.pm25.push(Number(entry.pm2_5));
@@ -671,7 +661,7 @@ async function generarBoxplots(sources) {
 
         mesesParaMostrar.forEach((mesIndex) => {
             let mesData = agrupado.get(mesIndex);
-
+            
             // Solo mostrar fila si hay datos para ese mes
             if (mesData && (mesData.pm25.length > 0 || mesData.pm10.length > 0)) {
                 const statsPm25 = calcularEstadisticas(mesData.pm25);
@@ -695,17 +685,17 @@ async function generarBoxplots(sources) {
                 <td>${meanAqi}</td>
                 `;
                 tableBody.appendChild(row);
-
+                
                 // Debug: mostrar en consola
                 console.log(`${mesData.nombre}: PM2.5 valores = ${mesData.pm25.length}, Max = ${statsPm25.max}`);
             }
         });
-
+        
         // Si no se agregó ninguna fila
         if (tableBody.children.length === 0) {
             tableBody.innerHTML = `<tr><td colspan="12">Sin datos suficientes para calcular boxplots.</td></tr>`;
         }
-
+        
     } catch (error) {
         console.error('Error al generar boxplots desde DB:', error);
         tableBody.innerHTML = `<tr><td colspan="12">Error al cargar datos: ${error.message}</td></tr>`;
@@ -846,7 +836,7 @@ function updateDailySummary(pm25, pm10, aqi) {
     }
 
     async function fetchHistorical(locationId) {
-        const url = `${API_BASE}/api/historical/${encodeURIComponent(locationId)}?days=${TRENDS_DAYS}&limit=${LIMIT}`;
+        const url = `/api/historical/${encodeURIComponent(locationId)}?days=${TRENDS_DAYS}&limit=${LIMIT}`;
         const r = await fetch(url);
         const j = await r.json();
         if (!j.success) throw new Error(j.error || 'No data');

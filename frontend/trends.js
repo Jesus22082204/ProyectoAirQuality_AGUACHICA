@@ -6,22 +6,12 @@
  * - Muestra un gráfico combinado (4 líneas) y un donut de distribución de AQI de 7 días.
  * - Se ejecuta solo cuando el usuario hace clic en el botón "Generar Interpretación".
  *
- * Requisitos:
- *  - API disponible en /api/locations y /api/historical/:id
- *  - Chart.js 4.x cargado en index.html
  */
 
 (function () {
   // ====== Config ======
   const TZ = "America/Bogota";
-  //const API_BASE = (window.API_BASE || "http://127.0.0.1:5000").replace(/\/$/, "");
-  //const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    //? "http://127.0.0.1:5000"
-    //: "https://proyectoairquality-aguachica.onrender.com";
-
-    const API_BASE = (window.APP_CONFIG?.API_BASE || "http://127.0.0.1:5000").replace(/\/$/, "");
-
-
+  const API_BASE = (window.API_BASE || "http://127.0.0.1:5000").replace(/\/$/, "");
   const trendsSection = document.getElementById("trendsSection");
   const trendsMsg = document.getElementById("trendsMsg");
   const btn = document.getElementById("btnGenerarInterpretacion");
@@ -32,14 +22,14 @@
   const COLORS = {
     pm25: "rgba(244, 63, 94, 1)",   // rojo
     pm10: "rgba(59, 130, 246, 1)",  // azul
-    o3: "rgba(34, 197, 94, 1)",   // verde
-    no2: "rgba(234, 179, 8, 1)"    // amarillo
+    o3:   "rgba(34, 197, 94, 1)",   // verde
+    no2:  "rgba(234, 179, 8, 1)"    // amarillo
   };
 
   let combinedChart = null;
   let aqiDonut = null;
 
-  // Exponer función por compatibilidad con index.html (se ignora pointId: siempre promedio global)
+  // Exponer función por compatibilidad con index.html 
   window.updateTrendsCharts = async function updateTrendsCharts(/* pointId */) {
     await renderAll();
   };
@@ -80,14 +70,14 @@
     const d = parts.find(p => p.type === "day").value;
 
     // Crear 04:59:59 de HOY (fin de ventana) en Bogotá
-    const endLocal = new Date(`${y}-${m}-${d}T04:59:59`);
+    const endLocal = new Date(`${y}-${m}-${d}T23:59:59`);
     // Para evitar desfases por TZ, obtenemos timestamp aplicando offset de Bogotá
     const endZoned = zonedTimeToUtc(endLocal, TZ);
 
     // Inicio es el día anterior a las 05:00:00 Bogotá
     const startLocal = new Date(endLocal);
     startLocal.setDate(startLocal.getDate() - 1);
-    startLocal.setHours(5, 0, 0, 0);
+    startLocal.setHours(0, 0, 0, 0);
     const startZoned = zonedTimeToUtc(startLocal, TZ);
 
     return { start: startZoned, end: endZoned };
@@ -145,8 +135,8 @@
     const bins = Array.from({ length: 24 }, () => ({
       sum_pm25: 0, c_pm25: 0,
       sum_pm10: 0, c_pm10: 0,
-      sum_o3: 0, c_o3: 0,
-      sum_no2: 0, c_no2: 0
+      sum_o3:   0, c_o3:   0,
+      sum_no2:  0, c_no2:  0
     }));
 
     // Para localizar la hora 05:00 como índice 0
@@ -169,20 +159,20 @@
 
       const pm25 = safeNumber(rec.pm2_5);
       const pm10 = safeNumber(rec.pm10);
-      const o3 = safeNumber(rec.o3);
-      const no2 = safeNumber(rec.no2);
+      const o3   = safeNumber(rec.o3);
+      const no2  = safeNumber(rec.no2);
 
       if (pm25 != null) { bins[idx].sum_pm25 += pm25; bins[idx].c_pm25++; }
       if (pm10 != null) { bins[idx].sum_pm10 += pm10; bins[idx].c_pm10++; }
-      if (o3 != null) { bins[idx].sum_o3 += o3; bins[idx].c_o3++; }
-      if (no2 != null) { bins[idx].sum_no2 += no2; bins[idx].c_no2++; }
+      if (o3   != null) { bins[idx].sum_o3   += o3;   bins[idx].c_o3++;   }
+      if (no2  != null) { bins[idx].sum_no2  += no2;  bins[idx].c_no2++;  }
     }
 
     // Calcular promedios
     const avg_pm25 = bins.map(b => (b.c_pm25 ? +(b.sum_pm25 / b.c_pm25).toFixed(2) : null));
     const avg_pm10 = bins.map(b => (b.c_pm10 ? +(b.sum_pm10 / b.c_pm10).toFixed(2) : null));
-    const avg_o3 = bins.map(b => (b.c_o3 ? +(b.sum_o3 / b.c_o3).toFixed(2) : null));
-    const avg_no2 = bins.map(b => (b.c_no2 ? +(b.sum_no2 / b.c_no2).toFixed(2) : null));
+    const avg_o3   = bins.map(b => (b.c_o3   ? +(b.sum_o3   / b.c_o3).toFixed(2)   : null));
+    const avg_no2  = bins.map(b => (b.c_no2  ? +(b.sum_no2  / b.c_no2).toFixed(2)  : null));
 
     return { avg_pm25, avg_pm10, avg_o3, avg_no2 };
   }
@@ -239,7 +229,7 @@
       renderAqiDonut(buildAqiHistogram(all7d));
 
       const fmt = new Intl.DateTimeFormat("es-CO", { timeZone: TZ, dateStyle: "medium", timeStyle: "short" });
-      trendsMsg.textContent = `Promedio de ${locs.length} puntos. Ventana: ${fmt.format(start)} → ${fmt.format(end)} (${TZ}).`;
+      //trendsMsg.textContent = `Promedio de ${locs.length} puntos. Ventana: ${fmt.format(start)} → ${fmt.format(end)} (${TZ}).`;
     } catch (err) {
       console.error(err);
       trendsMsg.textContent = "No se pudieron generar las tendencias. Revisa que haya datos históricos suficientes.";
@@ -345,16 +335,14 @@
       responsive: true,
       plugins: {
         legend: { position: "bottom" },
-        tooltip: {
-          callbacks: {
-            label: (ctx) => {
-              const total = hist.reduce((a, b) => a + b, 0) || 1;
-              const val = ctx.parsed;
-              const pct = ((val * 100) / total).toFixed(1) + "%";
-              return `${ctx.label}: ${val} (${pct})`;
-            }
+        tooltip: { callbacks: {
+          label: (ctx) => {
+            const total = hist.reduce((a,b)=>a+b,0) || 1;
+            const val = ctx.parsed;
+            const pct = ((val*100)/total).toFixed(1) + "%";
+            return `${ctx.label}: ${val} (${pct})`;
           }
-        }
+        } }
       },
       cutout: "65%"
     };

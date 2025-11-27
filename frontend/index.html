@@ -17,8 +17,6 @@
   <!-- App styles -->
   <link rel="stylesheet" href="style.css" />
 
-  <script src="config.js"></script>
-
   <style>
     .loading-spinner {
       border: 2px solid #f3f3f3;
@@ -89,189 +87,186 @@
       <button onclick="getAllPointsSummary()" class="bg-purple-600 text-white px-4 py-2 rounded-lg shadow hover:bg-purple-700 transition text-sm">
         Resumen
       </button> -->
-      <div class="relative">
-        <button id="exportBtn" onclick="toggleExportMenu()"
+<div class="relative">
+  <button id="exportBtn" onclick="toggleExportMenu()" 
           class="bg-purple-600 text-white px-4 py-2 rounded-lg shadow hover:bg-purple-700 transition text-sm flex items-center space-x-2">
-          <span>📊 Exportar Datos</span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </button>
-
-        <!-- Menú desplegable -->
-        <div id="exportMenu"
-          class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200"
-          style="z-index: 9999;">
-          <div class="py-2">
-            <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase">Seleccionar período</div>
-
-            <button onclick="exportData('24h')"
+    <span>📊 Exportar Datos</span>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+  
+  <!-- Menú desplegable -->
+  <div id="exportMenu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200" style="z-index: 9999;">
+    <div class="py-2">
+      <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase">Seleccionar período</div>
+      
+      <button onclick="exportData('24h')" 
               class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 transition">
-              <span>🕐</span>
-              <div>
-                <div class="font-medium text-gray-800">Últimas 24 horas</div>
-                <div class="text-xs text-gray-500">Datos del último día</div>
-              </div>
-            </button>
-
-            <button onclick="exportData('month')"
+        <span>🕐</span>
+        <div>
+          <div class="font-medium text-gray-800">Últimas 24 horas</div>
+          <div class="text-xs text-gray-500">Datos del último día</div>
+        </div>
+      </button>
+      
+      <button onclick="exportData('month')" 
               class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 transition">
-              <span>📅</span>
-              <div>
-                <div class="font-medium text-gray-800">Último mes</div>
-                <div class="text-xs text-gray-500">Datos de los últimos 30 días</div>
-              </div>
-            </button>
-
-            <button onclick="exportData('year')"
+        <span>📅</span>
+        <div>
+          <div class="font-medium text-gray-800">Último mes</div>
+          <div class="text-xs text-gray-500">Datos de los últimos 30 días</div>
+        </div>
+      </button>
+      
+      <button onclick="exportData('year')" 
               class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 transition">
-              <span>📊</span>
-              <div>
-                <div class="font-medium text-gray-800">Último año</div>
-                <div class="text-xs text-gray-500">Datos de los últimos 365 días</div>
-              </div>
-            </button>
-
-            <div class="border-t mt-2 pt-2 px-4 pb-2">
-              <div class="text-xs text-gray-500">
-                📍 Punto actual: <span id="currentPointName" class="font-medium">Aguachica General</span>
-              </div>
-            </div>
-          </div>
+        <span>📊</span>
+        <div>
+          <div class="font-medium text-gray-800">Último año</div>
+          <div class="text-xs text-gray-500">Datos de los últimos 365 días</div>
+        </div>
+      </button>
+      
+      <div class="border-t mt-2 pt-2 px-4 pb-2">
+        <div class="text-xs text-gray-500">
+          📍 Punto actual: <span id="currentPointName" class="font-medium">Aguachica General</span>
         </div>
       </div>
+    </div>
+  </div>
+</div>
 
-      <style>
-        /* Animación del menú desplegable */
-        #exportMenu {
-          animation: slideDown 0.2s ease-out;
-        }
+<style>
+  /* Animación del menú desplegable */
+  #exportMenu {
+    animation: slideDown 0.2s ease-out;
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Cerrar menú al hacer clic fuera */
+  .export-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9998;
+  }
+  
+  /* Asegurar que el contenedor del botón también tenga z-index alto */
+  #exportBtn {
+    position: relative;
+    z-index: 9999;
+  }
+</style>
 
-        @keyframes slideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
+<script>
+// Funciones para el menú de exportación
+function toggleExportMenu() {
+  const menu = document.getElementById('exportMenu');
+  const isHidden = menu.classList.contains('hidden');
+  
+  if (isHidden) {
+    menu.classList.remove('hidden');
+    // Agregar overlay para cerrar al hacer clic fuera
+    const overlay = document.createElement('div');
+    overlay.className = 'export-overlay';
+    overlay.onclick = () => {
+      menu.classList.add('hidden');
+      overlay.remove();
+    };
+    document.body.appendChild(overlay);
+  } else {
+    menu.classList.add('hidden');
+    document.querySelector('.export-overlay')?.remove();
+  }
+}
 
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+async function exportData(period) {
+  // Cerrar menú
+  document.getElementById('exportMenu').classList.add('hidden');
+  document.querySelector('.export-overlay')?.remove();
+  
+  // Obtener punto actual
+  const currentPointId = selectedPointId || 'aguachica_general';
+  const currentPoint = pointsOfInterest.find(p => p.id === currentPointId);
+  
+  // Mostrar indicador de carga
+  const btn = document.getElementById('exportBtn');
+  const originalHTML = btn.innerHTML;
+  btn.innerHTML = '<div class="loading-spinner"></div><span>Generando archivo...</span>';
+  btn.disabled = true;
+  
+  try {
+    const API_BASE = 'http://127.0.0.1:5000';
+    const response = await fetch(`${API_BASE}/api/export/${currentPointId}?period=${period}`);
+    
+    if (!response.ok) {
+      throw new Error('Error al generar el archivo');
+    }
+    
+    // Descargar el archivo
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    
+    // Nombre del archivo con fecha y ubicación
+    const fecha = new Date().toISOString().split('T')[0];
+    const locationName = currentPoint.name.replace(/\s+/g, '_').toLowerCase();
+    const periodName = {
+      '24h': '24_horas',
+      'month': 'ultimo_mes',
+      'year': 'ultimo_año'
+    }[period];
+    
+    a.download = `datos_calidad_aire_${locationName}_${periodName}_${fecha}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+    
+    // Mostrar mensaje de éxito
+    alert(`✅ Archivo exportado exitosamente:\n${a.download}`);
+    
+  } catch (error) {
+    console.error('Error al exportar datos:', error);
+    alert('❌ Error al exportar datos. Por favor, intenta nuevamente.');
+  } finally {
+    // Restaurar botón
+    btn.innerHTML = originalHTML;
+    btn.disabled = false;
+  }
+}
 
-        /* Cerrar menú al hacer clic fuera */
-        .export-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          z-index: 9998;
-        }
+// Actualizar nombre del punto actual en el menú
+function updateCurrentPointName() {
+  const currentPointId = selectedPointId || 'aguachica_general';
+  const currentPoint = pointsOfInterest.find(p => p.id === currentPointId);
+  const nameElement = document.getElementById('currentPointName');
+  if (nameElement && currentPoint) {
+    nameElement.textContent = currentPoint.name;
+  }
+}
 
-        /* Asegurar que el contenedor del botón también tenga z-index alto */
-        #exportBtn {
-          position: relative;
-          z-index: 9999;
-        }
-      </style>
-
-      <script>
-        // Funciones para el menú de exportación
-        function toggleExportMenu() {
-          const menu = document.getElementById('exportMenu');
-          const isHidden = menu.classList.contains('hidden');
-
-          if (isHidden) {
-            menu.classList.remove('hidden');
-            // Agregar overlay para cerrar al hacer clic fuera
-            const overlay = document.createElement('div');
-            overlay.className = 'export-overlay';
-            overlay.onclick = () => {
-              menu.classList.add('hidden');
-              overlay.remove();
-            };
-            document.body.appendChild(overlay);
-          } else {
-            menu.classList.add('hidden');
-            document.querySelector('.export-overlay')?.remove();
-          }
-        }
-
-        async function exportData(period) {
-          // Cerrar menú
-          document.getElementById('exportMenu').classList.add('hidden');
-          document.querySelector('.export-overlay')?.remove();
-
-          // Obtener punto actual
-          const currentPointId = selectedPointId || 'aguachica_general';
-          const currentPoint = pointsOfInterest.find(p => p.id === currentPointId);
-
-          // Mostrar indicador de carga
-          const btn = document.getElementById('exportBtn');
-          const originalHTML = btn.innerHTML;
-          btn.innerHTML = '<div class="loading-spinner"></div><span>Generando archivo...</span>';
-          btn.disabled = true;
-
-          try {
-            const API_BASE = 'http://127.0.0.1:5000';
-            const response = await fetch(`${API_BASE}/api/export/${currentPointId}?period=${period}`);
-
-            if (!response.ok) {
-              throw new Error('Error al generar el archivo');
-            }
-
-            // Descargar el archivo
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-
-            // Nombre del archivo con fecha y ubicación
-            const fecha = new Date().toISOString().split('T')[0];
-            const locationName = currentPoint.name.replace(/\s+/g, '_').toLowerCase();
-            const periodName = {
-              '24h': '24_horas',
-              'month': 'ultimo_mes',
-              'year': 'ultimo_año'
-            }[period];
-
-            a.download = `datos_calidad_aire_${locationName}_${periodName}_${fecha}.xlsx`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-
-            // Mostrar mensaje de éxito
-            alert(`✅ Archivo exportado exitosamente:\n${a.download}`);
-
-          } catch (error) {
-            console.error('Error al exportar datos:', error);
-            alert('❌ Error al exportar datos. Por favor, intenta nuevamente.');
-          } finally {
-            // Restaurar botón
-            btn.innerHTML = originalHTML;
-            btn.disabled = false;
-          }
-        }
-
-        // Actualizar nombre del punto actual en el menú
-        function updateCurrentPointName() {
-          const currentPointId = selectedPointId || 'aguachica_general';
-          const currentPoint = pointsOfInterest.find(p => p.id === currentPointId);
-          const nameElement = document.getElementById('currentPointName');
-          if (nameElement && currentPoint) {
-            nameElement.textContent = currentPoint.name;
-          }
-        }
-
-        // Llamar al cambiar de punto
-        const originalShowPointDetailsExport = window.showPointDetails;
-        window.showPointDetails = function (pointId) {
-          if (originalShowPointDetailsExport) originalShowPointDetailsExport(pointId);
-          updateCurrentPointName();
-        };
-      </script>
+// Llamar al cambiar de punto
+const originalShowPointDetailsExport = window.showPointDetails;
+window.showPointDetails = function(pointId) {
+  if (originalShowPointDetailsExport) originalShowPointDetailsExport(pointId);
+  updateCurrentPointName();
+};
+</script>
 
 
 
@@ -415,7 +410,7 @@
             <canvas id="combinedTrend"></canvas>
           </div>
 
-          <!-- Distribución AQI (torta) -->
+          <!-- Distribución AQI (torta) 
           <div>
             <h4 class="text-sm font-medium text-gray-600 mb-2">Distribución AQI (7 días)</h4>
             <div class="aqi-donut-wrap">
@@ -426,7 +421,8 @@
             </p>
           </div>
         </section>
-      </div>
+      </div> 
+      -->
 
       <!-- Heatmap + Pronóstico -->
       <section class="bg-white rounded-2xl shadow p-6">
@@ -530,75 +526,6 @@
 
     updateLoadingStatus('Inicializando aplicación...');
   </script>
-
-  <script>
-    // Configuración global del API
-    window.API_CONFIG = {
-      BASE_URL: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-        ? "http://127.0.0.1:5000"
-        : "https://proyectoairquality-aguachica.onrender.com  " // Tu URL de Render aquí
-    };
-  </script>
-
-  <script src="config.js"></script>
-
-<script>
-  // Verificar conexión al cargar la página
-  window.addEventListener('load', async () => {
-    console.log('🚀 Iniciando aplicación...');
-    
-    if (window.APP_CONFIG) {
-      // Esperar un momento para que la página cargue
-      setTimeout(async () => {
-        const isConnected = await window.APP_CONFIG.checkConnection();
-        
-        if (!isConnected) {
-          const msg = '⚠️ No se pudo conectar con el servidor.\n\n' +
-                     'Posibles causas:\n' +
-                     '1. El backend en Render está iniciando (puede tardar 1-2 min)\n' +
-                     '2. Verifica que el servicio esté activo en Render\n' +
-                     '3. Revisa la consola del navegador (F12) para más detalles';
-          
-          // Mostrar en consola pero no alertar (puede estar cargando)
-          console.warn(msg);
-          
-          // Mostrar banner de advertencia en la página
-          const banner = document.createElement('div');
-          banner.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; background: #fef3c7; color: #92400e; padding: 1rem; text-align: center; z-index: 9999; font-weight: 600;';
-          banner.innerHTML = '⚠️ Conectando con el servidor... Si tarda más de 2 minutos, revisa la consola (F12)';
-          document.body.insertBefore(banner, document.body.firstChild);
-          
-          // Reintentar cada 5 segundos
-          let retries = 0;
-          const maxRetries = 24; // 2 minutos (24 * 5 segundos)
-          const retryInterval = setInterval(async () => {
-            retries++;
-            console.log(`🔄 Reintento ${retries}/${maxRetries}...`);
-            
-            const connected = await window.APP_CONFIG.checkConnection();
-            if (connected) {
-              banner.style.background = '#d1fae5';
-              banner.style.color = '#065f46';
-              banner.innerHTML = '✅ Conexión establecida correctamente';
-              setTimeout(() => banner.remove(), 3000);
-              clearInterval(retryInterval);
-            } else if (retries >= maxRetries) {
-              banner.style.background = '#fee2e2';
-              banner.style.color = '#991b1b';
-              banner.innerHTML = '❌ No se pudo conectar. Verifica que el backend esté activo en Render';
-              clearInterval(retryInterval);
-            }
-          }, 5000);
-        } else {
-          console.log('✅ Aplicación lista para usar');
-        }
-      }, 1000);
-    } else {
-      console.error('❌ No se cargó APP_CONFIG - verifica que config.js esté incluido');
-      alert('Error: No se cargó la configuración. Verifica que config.js exista en la carpeta frontend/');
-    }
-  });
-</script>
 
   <!-- Tu script principal (mapa + indicadores) -->
   <script src="script.js"></script>
